@@ -145,6 +145,8 @@ where
     type Item = Iter::Item;
 
     fn next(&mut self) -> Option<Self::Item> {
+        // It is important to generate the next() element *before* we apply
+        // the rate-limiter since we don't know how long next() will take.
         self.iter.next().map(|s| self.ratelimit.sleep_act(|| s))
     }
 
